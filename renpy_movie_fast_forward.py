@@ -24,28 +24,33 @@ def generate_code():
     def ff_cutscene(path):
         renpy.call(f"{Path(path).stem}_ff")
 
-define dissolve_fast = Dissolve(0.25)
-
-style fast_forward:
+style fast_forward_text:
     color "#DDD"
     size 16
     xalign 0.5
 
 screen fast_forward:
+    style_prefix "fast_forward"
     frame:
-        background "#000000"
+        background "#00000050"
         ysize config.screen_height
         xalign 1.0
         xpadding 15
         has vbox
         align (0.5, 0.5)
         text "[jump_time_iso]" style "fast_forward"
-        text "▹ ▹ ▹ ▹" style "fast_forward"
+        hbox:
+            spacing 9
+            xalign 0.5
+            text "▸" at delayed_blink(0.0, 1.0)
+            text "▸" at delayed_blink(0.2, 1.0)
+            text "▸" at delayed_blink(0.4, 1.0)
+
 
 label fast_forward():
     $jump_time_iso = time.strftime("%H:%M:%S", time.gmtime(jump_time))
-    show screen fast_forward with dissolve_fast
-    hide screen fast_forward with dissolve_fast
+    show screen fast_forward with dissolve
+    hide screen fast_forward with dissolve
     return
 
 """
